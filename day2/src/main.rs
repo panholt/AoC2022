@@ -60,11 +60,41 @@ impl Round {
 
 fn play_to_move(play: &str) -> Move {
     match play {
-        "A" | "X" => Move::Rock,
-        "B" | "Y" => Move::Paper,
-        "C" | "Z" => Move::Scissors,
+        "A" => Move::Rock,
+        "B" => Move::Paper,
+        "C" => Move::Scissors,
         _ => Move::Unknown,
     }
+}
+
+fn their_play_to_mine(theirs: &Move, mine: &str) -> Move {
+    match mine {
+        "X" => {
+            match &theirs {
+                Move::Rock => return Move::Scissors,
+                Move::Paper => return Move::Rock,
+                Move::Scissors => return Move::Paper,
+                Move::Unknown => return Move::Unknown,
+            };
+        }
+        "Y" => {
+            match &theirs {
+                Move::Rock => return Move::Rock,
+                Move::Paper => return Move::Paper,
+                Move::Scissors => return Move::Scissors,
+                Move::Unknown => return Move::Unknown,
+        };
+    }
+       "Z" => {
+            match &theirs {
+                Move::Rock => return Move::Paper,
+                Move::Paper => return Move::Scissors,
+                Move::Scissors => return Move::Rock,
+                Move::Unknown => return Move::Unknown,
+        };
+    }
+    _ => return Move::Unknown
+}
 }
 
 fn main() {
@@ -74,9 +104,11 @@ fn main() {
     for line in reader.lines() {
         let line = line.unwrap();
         let elems: Vec<&str> = line.split(' ').collect();
+        let their_play = play_to_move(elems[0]);
+        let my_play = their_play_to_mine(&their_play, elems[1]);
         let round = Round{
-            theirs: play_to_move(elems[0]),
-            mine: play_to_move(elems[1])
+            theirs: their_play,
+            mine: my_play
         };
         score += round.score();
     };
