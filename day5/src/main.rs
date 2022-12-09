@@ -114,7 +114,7 @@ fn main() {
     for char in items{
         new_items.push(char);
     }
-    // new_items.reverse();
+    new_items.reverse();
     // println!("New Items: {:?}", new_items);
     match dest_lane{
         1 => {for char in new_items {port.lane_1.push_front(char);}}
