@@ -1,10 +1,10 @@
-use std::fs;
+use std::{fs, collections::HashSet};
 
 
 fn find_proto_mark(input: &str) -> i32 {
-    let mut counter: i32 = 3;
+    let mut counter: i32 = 13;
     let input_len = input.len().try_into().unwrap();
-    let mut windows = input.as_bytes().windows(4);
+    let mut windows = input.as_bytes().windows(14);
     while counter <= input_len {
         let next = windows.next().unwrap();
         counter += 1;
@@ -16,12 +16,12 @@ fn find_proto_mark(input: &str) -> i32 {
 }
 
 fn is_unique(input: &[u8]) -> bool {
-    input[0] != input[1] &&
-    input[0] != input[2] &&
-    input[0] != input[3] &&
-    input[1] != input[2] &&
-    input[1] != input[3] &&
-    input[2] != input[3] 
+    let input_len = input.len();
+    let mut set = HashSet::new();
+    for item in input{
+        set.insert(item);
+    }
+    set.len() == input_len
 }
 fn main() {
     let input = fs::read_to_string("../inputs/day6.txt").unwrap();
