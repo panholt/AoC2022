@@ -14,20 +14,50 @@ fn score_items(items: Vec<char>) -> i32 {
     total.try_into().unwrap()
 }
 
+struct GroupRutsack {
+    line1: String,
+    line2: String,
+    line3: String,
+}
+
+impl GroupRutsack {
+
+    fn find_common_item(self) -> char {
+        for char in self.line1.chars() {
+            if self.line2.contains(char) && self.line3.contains(char) {
+                return char;
+            };
+        };
+        return ' '
+    }
+}
+
 fn main() {
     let file = fs::File::open("../inputs/day3.txt").unwrap();
     let reader = BufReader::new(file);
-    let mut common_items: Vec<char> = Vec::new();
+    let mut groups: Vec<GroupRutsack> = Vec::new();
+    let mut line_counter = 1;
+    let mut line_container: Vec<String> = Vec::new();
     for line in reader.lines() {
         let line = line.unwrap();
-        let line_size = line.len();
-        let (compartment1, compartment2) = line.split_at(line_size / 2);
-        for char in compartment1.chars() {
-            if compartment2.contains(char) {
-                common_items.push(char);
-                break;
-            }
+        match line_counter {
+            1 => {line_container.push(line); line_counter += 1},
+            2 => {line_container.push(line); line_counter += 1},
+            3 => {line_container.push(line); 
+                    let group = GroupRutsack{
+                    line3: line_container.pop().unwrap(),
+                    line2: line_container.pop().unwrap(),
+                    line1: line_container.pop().unwrap(),
+                };
+                groups.push(group);
+                line_counter = 1;
+            },
+            _ => (),
         };
     };
-    println!("Puzzle 1 solution is: {} !!", score_items(common_items));
+    let mut common_items: Vec<char> = Vec::new();
+    for group in groups {
+        common_items.push(group.find_common_item());
+    }
+    println!("Puzzle 2 solution is: {} !!", score_items(common_items));
 }
