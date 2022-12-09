@@ -22,16 +22,6 @@ struct SectionRange {
     high: i32,
 }
 
-impl SectionRange {
-    fn get_range(self) -> Vec<i32> {
-        let mut result: Vec<i32> = Vec::new();
-        for i in self.low .. self.high {
-            result.push(i);
-        }
-        result
-    }
-}
-
 fn main() {
     let file = fs::File::open("../inputs/day4.txt").unwrap();
     let reader = BufReader::new(file);
