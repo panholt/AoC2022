@@ -29,5 +29,5 @@ fn main() {
             }
         };
     };
-    println!("Puzzle 1 solution is: {}", score_items(common_items));
+    println!("Puzzle 1 solution is: {} !!", score_items(common_items));
 }
