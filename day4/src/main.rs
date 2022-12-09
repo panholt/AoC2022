@@ -15,6 +15,11 @@ impl AssignmentPair{
         (self.range_2.low <= self.range_1.low && 
         self.range_2.high >= self.range_1.high)
     }
+
+    fn overlaps(self) -> bool {
+        (self.range_1.low <= self.range_2.high && self.range_2.low <= self.range_1.high) ||
+        (self.range_2.low <= self.range_1.high && self.range_1.low <= self.range_2.high)
+    } 
 }
 #[derive(Debug)]
 struct SectionRange {
@@ -42,9 +47,9 @@ fn main() {
     };
     let mut counter = 0;
     for assignment in assignment_pairs{
-        if assignment.fully_contained() {
+        if assignment.overlaps() {
             counter += 1;
         }
     }
-    println!("Day 4 Puzzle 1: {}", counter);
+    println!("Day 4 Puzzle 2: {}", counter);
 }
