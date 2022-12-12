@@ -40,12 +40,22 @@ fn main() {
             }
         }
 }
-let mut count = 0;
-for (k,v) in file_system.into_iter(){
-    if v < 100000 {
-        count += v;
+    let disk_size = 70000000;
+    let target_size = 30000000;
+    let total_usage = file_system.get("ROOT").unwrap();
+    let free_space = disk_size - total_usage;
+    println!("Free Space: {}", free_space);
+    let space_needed = target_size - free_space;
+    println!("Space needed: {}", space_needed);
+    let mut dir_size = disk_size + 1;
+    for (k,v) in file_system.into_iter(){
+        if v > space_needed {
+            println!("{} is smaller than {}", v, space_needed);
+            if v < dir_size{
+                dir_size = v;
+            }
+        }
     }
-}
-println!("Puzzle 1 total: {}", count);
+    println!("Smallest directory: {}", dir_size);
 
 }
